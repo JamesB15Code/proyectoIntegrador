@@ -5,9 +5,9 @@ app.config['SECRET_KEY'] = 'mi_secreto'  # Cambia esto por una clave secreta seg
 
 @app.route('/')
 def home():
-   return render_template('formulario.html')
+     return render_template('formulario.html')
 
-@app.route('/form', methods=[ 'POST'])
+@app.route('/form', methods=['GET', 'POST'])
 def form():
     if request.method == 'POST':
         user_id = request.form['user_id']
