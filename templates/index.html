@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diabetes Prediction Form</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-slate-100">
+    <header class="my-10">
+        <h1
+            class="bg-gradient-to-tr from-green-700 to-purple-200 text-transparent bg-clip-text font-extrabold text-center text-6xl">
+            Diabetes
+            Prediction Form
+        </h1>
+    </header>
+    <main class="container mx-auto max-w-5xl">
+        <form id="predictionForm" action="/predict" method="POST" class="p-10 shadow rounded space-y-2">
+            <div class="flex flex-col gap-2">
+                <label for="glucosa" class="text-lg font-bold text-slate-600 ">Glucosa:</label>
+                <input type="number" id="glucosa" name="Glucosa" class="p-3 border-2 bg-slate-100 rounded" step="any"
+                    required>
+            </div>
+
+            <div class="flex flex-col gap-2">
+                <label class="text-lg font-bold text-slate-600 " for="presion_arterial">Presión Arterial:</label>
+                <input type="number" id="presion_arterial" name="Presion_Arterial"
+                    class="p-3 border-2 bg-slate-100 rounded" step="any" required>
+            </div>
+            <div class="flex flex-col gap-2">
+                <label class="text-lg font-bold text-slate-600 " for="grosor_pliegue">Grosor del Pliegue
+                    Cutáneo:</label>
+                <input type="number" id="grosor_pliegue" name="Grosor_Pliegue_Cutaneo"
+                    class="p-3 border-2 bg-slate-100 rounded" step="any" required>
+            </div>
+            <div class="flex flex-col gap-2">
+                <label class="text-lg font-bold text-slate-600 " for="insulina">Insulina:</label>
+                <input type="number" id="insulina" name="Insulina" class="p-3 border-2 bg-slate-100 rounded" step="any"
+                    required>
+            </div>
+            <div class="flex flex-col gap-2">
+                <label class="text-lg font-bold text-slate-600 " for="imc">Índice de Masa Corporal (IMC):</label>
+                <input type="number" id="imc" name="IMC" class="p-3 border-2 bg-slate-100 rounded" step="any" required>
+            </div>
+            <div class="flex flex-col gap-2">
+                <label class="text-lg font-bold text-slate-600 " for="pedigri">Función Pedigrí Diabetes:</label>
+                <input type="number" id="pedigri" name="Funcion_Pedigri_Diabetes"
+                    class="p-3 border-2 bg-slate-100 rounded" step="any" required>
+            </div>
+            <div class="flex flex-col gap-2">
+                <label class="text-lg font-bold text-slate-600 " for="edad">Edad:</label>
+                <input type="number" id="edad" name="Edad" class="p-3 border-2 bg-slate-100 rounded" step="any"
+                    required>
+            </div>
+
+            <input type="submit" value="Predecir"
+                class="bg-indigo-600 hover:bg-indigo-500 p-3 rounded text-white w-full font-bold ">
+        </form>
+
+        <div id="result">
+
+        </div>
+    </main>
+
+    <script>
+        document.getElementById('predictionForm').onsubmit = async function (event) {
+            event.preventDefault();
+
+            const divResult = document.getElementById('result');
+
+            const formData = {
+                'Glucosa': parseFloat(document.getElementById('glucosa').value),
+                'Presion_Arterial': parseFloat(document.getElementById('presion_arterial').value),
+                'Grosor_Pliegue_Cutaneo': parseFloat(document.getElementById('grosor_pliegue').value),
+                'Insulina': parseFloat(document.getElementById('insulina').value),
+                'IMC': parseFloat(document.getElementById('imc').value),
+                'Funcion_Pedigri_Diabetes': parseFloat(document.getElementById('pedigri').value),
+                'Edad': parseFloat(document.getElementById('edad').value)
+            };
+
+            const response = await fetch('/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+
+            const result = await response.json();
+
+            //insert in div #result
+            divResult.innerHTML = `
+                <div class="font-bold text-center">
+                    ${result.Resultado}
+                </div>
+                `;
+
+
+        };
+    </script>
+</body>
+
+</html>
